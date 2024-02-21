@@ -7,6 +7,25 @@ from passlib.hash import bcrypt
 import getpass
 from colorama import init, Fore, Style
 
+LOGO = """
+ ██████╗ ██╗   ██╗██╗██╗     ██╗     
+██╔═══██╗██║   ██║██║██║     ██║     
+██║   ██║██║   ██║██║██║     ██║     
+██║▄▄ ██║██║   ██║██║██║     ██║     
+╚██████╔╝╚██████╔╝██║███████╗███████╗
+ ╚══▀▀═╝  ╚═════╝ ╚═╝╚══════╝╚══════╝
+                                     
+ ██████╗██╗     ██╗                  
+██╔════╝██║     ██║                  
+██║     ██║     ██║                  
+██║     ██║     ██║                  
+╚██████╗███████╗██║                  
+ ╚═════╝╚══════╝╚═╝                  
+ """
+
+def display_logo_and_menu():
+    print(HEADER_COLOR + LOGO + RESET_STYLE)
+
 # Initialize colorama for text styling
 init(autoreset=True)
 
@@ -162,6 +181,9 @@ def main():
     user = None
 
     while not user:
+
+        display_logo_and_menu()
+
         print("\nMenu:")
         print("1. Sign Up")
         print("2. Sign In")
@@ -214,7 +236,7 @@ def main():
                     if blog_post:
                         view_blog_post_details(blog_post)
                     else:
-                        print(ERROR_COLOR + "Invalid blog post ID or you do not have permission to view this post.")
+                        print(ERROR_COLOR + "Invalid blog post ID or you do not have permission to view this post")
         elif choice == "5":
             add_blog_post(user)
         elif choice == "6":
