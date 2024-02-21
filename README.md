@@ -1,7 +1,7 @@
 # QuillCLI
 
 ## Overview:
-QuillCLI is an innovative command-line interface (CLI) blogging platform designed for writers who appreciate simplicity, efficiency, and technical sophistication. Unlike traditional web-based platforms, QuillCLI empowers users to manage their blog content, write posts, and engage with their audience directly from the command line.
+QuillCLI is a command-line interface (CLI) application for managing blog posts. It allows users to sign up, sign in, create, view, and delete blog posts, as well as add and view comments. The application is built using Python and SQLAlchemy, providing a simple and interactive way to interact with a blog system.
 
 ### Prerequisites
 
