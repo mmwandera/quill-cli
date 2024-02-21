@@ -10,6 +10,7 @@ ipdb = "*"
 faker = "*"
 passlib = "*"
 prettytable = "*"
+colorama = "*"
 
 [dev-packages]
 
