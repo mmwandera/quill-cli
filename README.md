@@ -3,40 +3,40 @@
 ## Overview:
 QuillCLI is an innovative command-line interface (CLI) blogging platform designed for writers who appreciate simplicity, efficiency, and technical sophistication. Unlike traditional web-based platforms, QuillCLI empowers users to manage their blog content, write posts, and engage with their audience directly from the command line.
 
-## Key Features:
+### Prerequisites
 
-### Effortless Writing:
-Compose and edit blog posts seamlessly using the power of the command line.
-Intuitive CLI commands for creating, updating, and managing your written content.
+- Python 3.x
+- Pipenv (install using `pip install pipenv`)
 
-### Streamlined Management:
-Navigate through your blog's structure effortlessly with CLI navigation.
-Efficiently manage posts, comments, and user interactions without leaving the command 
-line environment.
+## Getting Started
 
-### Security and Control:
-Ensure a secure blogging experience with a CLI-focused approach.
-Fine-tune user permissions and access controls directly through the command line.
+Follow these instructions to get a copy of the project up and running on your local machine.
 
-### Versatility and Integration:
-Easily integrate QuillCLI with your favorite text editors and development tools.
-Leverage the power of scripting for advanced automation and customization.
+1. **Fork the repository:**
 
-### Target Audience:
-QuillCLI caters to writers, bloggers, and developers who value a fast and efficient writing experience. It's ideal for those who prefer a command-line environment and appreciate the simplicity of managing their blog directly from the terminal.
+   Click the "Fork" button at the top right corner of this repository to create your copy.
 
+2. **Clone the repository:**
 
-## Why QuillCLI?
+    After copying the SSH link provided by pressing code on this repositry, run this on your terminal:
 
-### Simplicity Meets Power:
-QuillCLI combines the simplicity of a traditional writing tool with the power of a CLI, offering an unparalleled writing experience.
+   ```git clone https://github.com/your-username/quill-cli.git```
 
-### Developer-Friendly:
-Developers can leverage scripting capabilities for custom integrations, making QuillCLI a versatile and customizable solution.
+    Open the folder on your VSCode or preferred IDE
 
-### Enhanced Security:
-Users can enjoy a secure blogging environment with user permissions and access controls managed directly through the CLI.
+3. **Install dependencies:**
 
-## Conclusion:
-QuillCLI is not just a blogging platform; it's a command-line experience tailored for writers who seek efficiency, control, and a touch of technical elegance. Join us in revolutionizing the way we write, manage, and interact with blog content.
+    ```pipenv install```
 
+4. **Usage:**
+
+    ```pipenv run python quillcli.py```
+
+### License
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+### Acknowledgments
+
+* PrettyTable - For creating ASCII tables.
+* Passlib - For secure password hashing.
+* SQLAlchemy - For SQL toolkit and Object-Relational Mapping (ORM).
