@@ -35,6 +35,9 @@ class User(Base):
         if user and bcrypt.verify(password, user.password):
             return user
         return None
+    
+    def get_user_blog_posts(self, session):
+        return session.query(BlogPost).filter_by(user_id=self.id).all()
 
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"
@@ -64,6 +67,10 @@ class BlogPost(Base):
     @classmethod
     def get_all_blog_posts(cls, session):
         return session.query(cls).all()
+    
+    @classmethod
+    def get_blog_posts_by_user(cls, session, user_id):
+        return session.query(cls).filter_by(user_id=user_id).all()
 
     def __repr__(self):
         return f"<BlogPost(id={self.id}, title={self.title}, user_id={self.user_id})>"

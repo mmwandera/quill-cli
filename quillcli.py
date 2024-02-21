@@ -42,51 +42,14 @@ def sign_in():
         print("Invalid username or password.")
         return None
 
-def main():
-    user = None
-
-    while not user:
-        print("\nMenu:")
-        print("1. Sign Up")
-        print("2. Sign In")
-        print("0. Exit")
-
-        choice = input("Enter your choice: ")
-
-        if choice == "1":
-            sign_up()
-        elif choice == "2":
-            user = sign_in()
-        elif choice == "0":
-            exit()
-        else:
-            print("Invalid choice. Please enter a number from the menu.")
-
-    while True:
-        print("\nMenu:")
-        print("3. View Blog Posts")
-        print("4. Add Blog Post")
-        print("0. Exit")
-
-        choice = input("Enter your choice: ")
-
-        if choice == "3":
-            view_blog_posts(user)
-        elif choice == "4":
-            add_blog_post(user)
-        elif choice == "0":
-            break
-        else:
-            print("Invalid choice. Please enter a number from the menu.")
-
-def view_blog_posts(user):
-    print("View Blog Posts")
-    blog_posts = BlogPost.get_all_blog_posts(session)
+def view_all_blog_posts():
+    print("View All Blog Posts")
+    all_blog_posts = session.query(BlogPost).all()
     
     table = PrettyTable()
-    table.field_names = ["ID", "Title", "User"]
-    for post in blog_posts:
-        table.add_row([post.id, post.title, post.user.username])
+    table.field_names = ["ID", "Title", "User", "Created At"]
+    for post in all_blog_posts:
+        table.add_row([post.id, post.title, post.user.username, post.created_at])
     print(table)
 
     blog_post_id = input("Enter blog post ID to view details (or 0 to go back): ")
@@ -101,18 +64,15 @@ def view_blog_posts(user):
 
     blog_post = session.query(BlogPost).filter_by(id=blog_post_id).first()
     if blog_post:
-        view_blog_post_details(user, blog_post)
+        view_blog_post_details(blog_post)
 
-def view_blog_post_details(user, blog_post):
+def view_blog_post_details(blog_post):
     print("View Blog Post Details")
     print(f"Title: {blog_post.title}")
     print(f"Content: {blog_post.content}")
     print(f"Author: {blog_post.user.username}")
     print(f"Created At: {blog_post.created_at}")
 
-    # Add this line to print the length of the content
-    print(f"Content Length: {len(blog_post.content)}")
-    
     while True:
         print("\nOptions:")
         print("1. View Comments")
@@ -124,7 +84,7 @@ def view_blog_post_details(user, blog_post):
         if choice == "1":
             view_comments(blog_post)
         elif choice == "2":
-            add_comment(user, blog_post)
+            add_comment(blog_post.user, blog_post)
         elif choice == "0":
             break
         else:
@@ -154,6 +114,104 @@ def add_blog_post(user):
 
     new_blog_post = BlogPost.create_blog_post(session, title, content, user.id)
     print("Blog post added successfully.")
+
+def delete_blog_post(user):
+    print("Delete Blog Post")
+    user_blog_posts = BlogPost.get_blog_posts_by_user(session, user.id)
+
+    if not user_blog_posts:
+        print("You have no blog posts to delete.")
+        return
+
+    table = PrettyTable()
+    table.field_names = ["ID", "Title", "Created At"]
+    for post in user_blog_posts:
+        table.add_row([post.id, post.title, post.created_at])
+    print(table)
+
+    blog_post_id = input("Enter blog post ID to delete (or 0 to go back): ")
+    try:
+        blog_post_id = int(blog_post_id)
+    except ValueError:
+        print("Invalid blog post ID.")
+        return
+
+    if blog_post_id == 0:
+        return
+
+    blog_post = session.query(BlogPost).filter_by(id=blog_post_id, user_id=user.id).first()
+    if blog_post:
+        session.delete(blog_post)
+        session.commit()
+        print("Blog post deleted successfully.")
+    else:
+        print("Invalid blog post ID or you do not have permission to delete this post.")
+
+def main():
+    user = None
+
+    while not user:
+        print("\nMenu:")
+        print("1. Sign Up")
+        print("2. Sign In")
+        print("0. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            sign_up()
+        elif choice == "2":
+            user = sign_in()
+        elif choice == "0":
+            exit()
+        else:
+            print("Invalid choice. Please enter a number from the menu.")
+
+    while True:
+        print("\nMenu:")
+        print("3. View All Blog Posts")
+        print("4. View Your Blog Posts")
+        print("5. Add Blog Post")
+        print("6. Delete Blog Post")
+        print("0. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "3":
+            view_all_blog_posts()
+        elif choice == "4":
+            user_blog_posts = BlogPost.get_blog_posts_by_user(session, user.id)
+
+            if not user_blog_posts:
+                print("You have no blog posts.")
+            else:
+                table = PrettyTable()
+                table.field_names = ["ID", "Title", "Created At"]
+                for post in user_blog_posts:
+                    table.add_row([post.id, post.title, post.created_at])
+                print(table)
+
+                blog_post_id = input("Enter blog post ID to view details (or 0 to go back): ")
+                try:
+                    blog_post_id = int(blog_post_id)
+                except ValueError:
+                    print("Invalid blog post ID.")
+                    continue
+
+                if blog_post_id != 0:
+                    blog_post = session.query(BlogPost).filter_by(id=blog_post_id, user_id=user.id).first()
+                    if blog_post:
+                        view_blog_post_details(blog_post)
+                    else:
+                        print("Invalid blog post ID or you do not have permission to view this post.")
+        elif choice == "5":
+            add_blog_post(user)
+        elif choice == "6":
+            delete_blog_post(user)
+        elif choice == "0":
+            break
+        else:
+            print("Invalid choice. Please enter a number from the menu.")
 
 if __name__ == "__main__":
     main()
