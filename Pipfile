@@ -8,6 +8,8 @@ alembic = "*"
 sqlalchemy = "*"
 ipdb = "*"
 faker = "*"
+passlib = "*"
+prettytable = "*"
 
 [dev-packages]
 

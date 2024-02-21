@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, Text, F
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.sql import func
+from passlib.hash import bcrypt
 
 engine = create_engine('sqlite:///quillcli.db', echo=True)
 
@@ -21,6 +22,20 @@ class User(Base):
     # Relationship to Comment
     comments = relationship('Comment', back_populates='user')
 
+    @classmethod
+    def create_user(cls, session, username, email, password):
+        new_user = cls(username=username, email=email, password=password)
+        session.add(new_user)
+        session.commit()
+        return new_user
+
+    @classmethod
+    def authenticate(cls, session, username, password):
+        user = session.query(cls).filter_by(username=username).first()
+        if user and bcrypt.verify(password, user.password):
+            return user
+        return None
+
     def __repr__(self):
         return f"<User(id={self.id}, username={self.username}, email={self.email})>"
 
@@ -39,6 +54,17 @@ class BlogPost(Base):
     # Relationship to Comment
     comments = relationship('Comment', back_populates='blog_post')
 
+    @classmethod
+    def create_blog_post(cls, session, title, content, user_id):
+        new_blog_post = cls(title=title, content=content, user_id=user_id)
+        session.add(new_blog_post)
+        session.commit()
+        return new_blog_post
+    
+    @classmethod
+    def get_all_blog_posts(cls, session):
+        return session.query(cls).all()
+
     def __repr__(self):
         return f"<BlogPost(id={self.id}, title={self.title}, user_id={self.user_id})>"
 
@@ -56,6 +82,17 @@ class Comment(Base):
 
     # Relationship to BlogPost
     blog_post = relationship('BlogPost', back_populates='comments')
+
+    @classmethod
+    def create_comment(cls, session, text, user_id, blog_post_id):
+        new_comment = cls(text=text, user_id=user_id, blog_post_id=blog_post_id)
+        session.add(new_comment)
+        session.commit()
+        return new_comment
+    
+    @classmethod
+    def get_comments_for_blog_post(cls, session, blog_post_id):
+        return session.query(cls).filter_by(blog_post_id=blog_post_id).all()
 
     def __repr__(self):
         return f"<Comment(id={self.id}, text={self.text}, user_id={self.user_id}, blog_post_id={self.blog_post_id})>"
