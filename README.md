@@ -5,7 +5,7 @@ QuillCLI is an innovative command-line interface (CLI) blogging platform designe
 
 ### Prerequisites
 
-- Python 3.x
+- Python 3
 - Pipenv (install using `pip install pipenv`)
 
 ## Getting Started
