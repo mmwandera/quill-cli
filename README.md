@@ -30,7 +30,7 @@ Follow these instructions to get a copy of the project up and running on your lo
 
 4. **Usage:**
 
-    ```pipenv run python quillcli.py```
+    ```python quillcli.py```
 
 ### License
 This project is licensed under the MIT License - see the LICENSE file for details.
